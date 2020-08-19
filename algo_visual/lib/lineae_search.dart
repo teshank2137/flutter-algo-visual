@@ -9,13 +9,22 @@ class LinearSearch extends StatefulWidget {
 }
 
 class _LinearSearchState extends State<LinearSearch> {
-  List list = genrateRandomList();
   final _search = TextEditingController();
   bool isValid = false;
 
   void _handelSubmit(String text) {
     //TODO main algorithm
-    print(text);
+    int num = int.parse(text);
+    for (var i = 0; i < list.length; i++) {
+      if (num == list[i]) {
+        opList.removeAt(i);
+        opList.insert(i, _buildSizedBox(list[i], Colors.green));
+        break;
+      } else {
+        opList.removeAt(i);
+        opList.insert(i, _buildSizedBox(list[i], Colors.grey));
+      }
+    }
   }
 
   @override
@@ -25,16 +34,17 @@ class _LinearSearchState extends State<LinearSearch> {
       body: ListView(
         children: [
           Center(
-              child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Linear Search'),
-          )),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Linear Search'),
+            ),
+          ),
           SizedBox(
             height: 25,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: buildList(list),
+            children: opList,
           ),
           SizedBox(
             height: 25,
@@ -54,7 +64,9 @@ class _LinearSearchState extends State<LinearSearch> {
                 child: Text('Reset'),
                 onPressed: () {
                   setState(() {
+                    _search.clear();
                     list = genrateRandomList();
+                    opList = buildList(list);
                   });
                 },
               ),
@@ -75,6 +87,9 @@ class _LinearSearchState extends State<LinearSearch> {
   }
 }
 
+List list = genrateRandomList();
+List<Widget> opList = buildList(list);
+
 List genrateRandomList() {
   List list = [];
   var rng = new Random();
@@ -87,18 +102,18 @@ List genrateRandomList() {
 List<Widget> buildList(List list) {
   List<Widget> newList = [];
   for (var i = 0; i < list.length; i++) {
-    newList.add(_buildSizedBox(list[i]));
+    newList.add(_buildSizedBox(list[i], Colors.yellow));
   }
   return newList;
 }
 
-Widget _buildSizedBox(var i) {
+Widget _buildSizedBox(var i, Color color) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
       height: 50,
       width: 50,
-      color: Colors.grey,
+      color: color,
       child: Text(i.toString()),
     ),
   );
