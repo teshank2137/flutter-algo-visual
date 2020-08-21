@@ -88,6 +88,7 @@ class _LinearSearchState extends State<LinearSearch> {
                   )),
             ),
           ),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -98,7 +99,7 @@ class _LinearSearchState extends State<LinearSearch> {
                 ),
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.all(Radius.circular(20))),
-                splashColor: kPrimary,
+                splashColor: kSecondary,
                 onPressed: () {
                   setState(() {
                     _search.clear();
@@ -113,7 +114,7 @@ class _LinearSearchState extends State<LinearSearch> {
                   style: TextStyle(
                       color: kTextPrimary, fontWeight: FontWeight.bold),
                 ),
-                color: kPrimary,
+                color: kSecondary,
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.all(Radius.circular(20))),
                 onPressed: () {

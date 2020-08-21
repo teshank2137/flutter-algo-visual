@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'color.dart';
-import 'linear_search.dart';
+import 'searching.dart';
+import 'sorting.dart';
 
+// ignore: must_be_immutable
 class MyDropdownmenu extends StatefulWidget {
   String value;
   MyDropdownmenu(this.value);
@@ -16,7 +18,7 @@ class _MyDropdownmenuState extends State<MyDropdownmenu> {
     return DropdownButton(
       value: dropdownValue,
       icon: Icon(Icons.keyboard_arrow_down),
-      dropdownColor: kPrimary700,
+      dropdownColor: lPrimary,
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Colors.white),
@@ -32,6 +34,36 @@ class _MyDropdownmenuState extends State<MyDropdownmenu> {
               context,
               MaterialPageRoute(builder: (context) => LinearSearch()),
             );
+          } else if (newValue == 'Bubble Sort' &&
+              dropdownValue != 'Bubble Sort') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sorting(newValue)),
+            );
+          } else if (newValue == 'Merge Sort' &&
+              dropdownValue != 'Merge Sort') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sorting(newValue)),
+            );
+          } else if (newValue == 'Quick Sort' &&
+              dropdownValue != 'Quick Sort') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sorting(newValue)),
+            );
+          } else if (newValue == 'Insertion Sort' &&
+              dropdownValue != 'Insertion Sort') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sorting(newValue)),
+            );
+          } else if (newValue == 'Selection Sort' &&
+              dropdownValue != 'Selection Sort') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sorting(newValue)),
+            );
           }
           dropdownValue = newValue;
         });
@@ -41,6 +73,8 @@ class _MyDropdownmenuState extends State<MyDropdownmenu> {
         'Linear Search',
         'Binary Search',
         'Bubble Sort',
+        'Selection Sort',
+        'Insertion Sort',
         'Merge Sort',
         'Quick Sort'
       ].map<DropdownMenuItem<String>>((String value) {

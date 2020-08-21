@@ -10,3 +10,4 @@ Color kTextBackground = Color(0xffffffff);
 Color lPrimary = Color(0xff0336ff);
 Color lSecondary = Color(0xffffde03);
 Color lHighlight = Color(0xffff0266);
+Color lSuccess = Color(0xffa2ff03);

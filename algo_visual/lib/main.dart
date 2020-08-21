@@ -9,7 +9,7 @@ void main() {
 
 Widget appBar(String value) {
   return AppBar(
-    backgroundColor: kBackground.withOpacity(0.97),
+    backgroundColor: kBackground.withOpacity(0.95),
     elevation: 1.0,
     leading: Icon(
       Icons.code,
