@@ -1,6 +1,7 @@
 import 'package:algo_visual/home.dart';
 import 'package:flutter/material.dart';
 import 'dropdown.dart';
+import 'color.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,8 +9,19 @@ void main() {
 
 Widget appBar(String value) {
   return AppBar(
-    leading: Icon(Icons.code),
-    title: Text('Algorithm Visualiser'),
+    backgroundColor: kBackground.withOpacity(0.97),
+    elevation: 1.0,
+    leading: Icon(
+      Icons.code,
+      color: kTextBackground,
+    ),
+    title: Text(
+      'Algorithm Visualiser',
+      style: TextStyle(
+        color: kTextBackground,
+        fontWeight: FontWeight.normal,
+      ),
+    ),
     actions: [
       Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 40, 8),
@@ -38,6 +50,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: appBar('All'),
       body: HomePage(),
     );

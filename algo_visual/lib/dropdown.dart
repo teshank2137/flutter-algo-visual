@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'lineae_search.dart';
+import 'color.dart';
+import 'linear_search.dart';
 
 class MyDropdownmenu extends StatefulWidget {
   String value;
@@ -16,20 +16,24 @@ class _MyDropdownmenuState extends State<MyDropdownmenu> {
     return DropdownButton(
       value: dropdownValue,
       icon: Icon(Icons.keyboard_arrow_down),
-      dropdownColor: Colors.black,
+      dropdownColor: kPrimary700,
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Colors.white),
       onChanged: (String newValue) {
         setState(() {
-          dropdownValue = newValue;
-          print(dropdownValue);
-          if (dropdownValue == 'All') {
-            print('im in');
-            Navigator.pop(context);
-          } else if (dropdownValue == 'Linear Search') {
-            print('Im in linear search');
+          if (newValue == 'All' && dropdownValue != 'All') {
+            while (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          } else if (newValue == 'Linear Search' &&
+              dropdownValue != 'Linear Search') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LinearSearch()),
+            );
           }
+          dropdownValue = newValue;
         });
       },
       items: <String>[
@@ -42,7 +46,10 @@ class _MyDropdownmenuState extends State<MyDropdownmenu> {
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
-          child: Text(value),
+          child: Text(
+            value,
+            style: TextStyle(color: kTextBackground),
+          ),
         );
       }).toList(),
     );
