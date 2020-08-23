@@ -14,8 +14,8 @@ class _SortingState extends State<Sorting> {
   double _range = 20;
   List list;
   List<Widget> opList;
-  double _delay = 0.1;
   bool stop = false;
+  double speed = 100;
 
   @override
   void initState() {
@@ -87,6 +87,43 @@ class _SortingState extends State<Sorting> {
           SizedBox(
             height: 16,
           ),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Min Speed',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: kTextBackground),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 6,
+                  child: Slider(
+                    value: speed,
+                    //label: _range.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        speed = value;
+                      });
+                    },
+                    activeColor: lHighlight,
+                    inactiveColor: Color(0xffffde03),
+                    min: 1,
+                    max: 400000,
+                    divisions: 400000,
+                  ),
+                ),
+                Text(
+                  'Max Speed',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: kTextBackground),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -116,9 +153,9 @@ class _SortingState extends State<Sorting> {
                 splashColor: Color(0xffff0266),
                 onPressed: () {
                   setState(() {
+                    stop = true;
                     list = generateRandomList(_range);
                     opList = buildList(list, Color(0xff0336ff));
-                    stop = true;
                   });
                 },
               ),
@@ -142,9 +179,11 @@ class _SortingState extends State<Sorting> {
                       }
                       break;
 
-                    case 'Merge Sort':
+                    case 'Selection Sort':
                       {
-                        //statements;
+                        setState(() {
+                          selectionSort();
+                        });
                       }
                       break;
                     case 'Quick Sort':
@@ -178,17 +217,24 @@ class _SortingState extends State<Sorting> {
       if (i < n) {
         setState(() {
           opList.removeAt(i);
-          opList.insert(i, buildColumn(list[i], lSecondary, 12));
+          opList.insert(i, buildColumn(list[i], lSecondary, 10));
           opList.removeAt(i + 1);
-          opList.insert(i + 1, buildColumn(list[i + 1], lSecondary, 12));
+          opList.insert(i + 1, buildColumn(list[i + 1], lSecondary, 10));
         });
-        await Future.delayed(Duration(seconds: (_delay).toInt()));
+        await Future.delayed(Duration(microseconds: (speed).toInt()));
         if (list[i] <= list[i + 1]) {
         } else {
           swap(list, i, i + 1);
           setState(() {
+            opList.removeAt(i);
+            opList.insert(i, buildColumn(list[i], lHighlight, 10));
+            opList.removeAt(i + 1);
+            opList.insert(i + 1, buildColumn(list[i + 1], lHighlight, 10));
+          });
+          setState(() {
             swap(opList, i, i + 1);
           });
+          await Future.delayed(Duration(microseconds: (speed).toInt()));
         }
         setState(() {
           opList.removeAt(i);
@@ -210,6 +256,62 @@ class _SortingState extends State<Sorting> {
       opList.removeAt(0);
       opList.insert(0, buildColumn(list[0], lSuccess, 10));
     }
+  }
+
+  void updatePointers(List listOp, Color color) {
+    setState(() {
+      opList.removeAt(listOp[0]);
+      opList.insert(listOp[0], buildColumn(list[listOp[0]], color, 12));
+      opList.removeAt(listOp[1]);
+      opList.insert(listOp[1], buildColumn(list[listOp[1]], color, 12));
+    });
+  }
+
+  void selectionSort() async {
+    for (int i = 0; i < list.length - 1; i++) {
+      if (stop) break;
+      // Find the minimum element in unsorted number
+      int minIdx = i;
+      //setUpdateText('Finding minimum');
+      for (int j = i + 1; j < list.length; j++) {
+        if (stop) break;
+        updatePointers([i, j], lSecondary);
+        await Future.delayed(Duration(microseconds: (speed ~/ 1.5).toInt()));
+        opList.removeAt(j);
+        opList.insert(j, buildColumn(list[j], lPrimary, 10));
+        if (list[j] < list[minIdx]) {
+          opList.removeAt(minIdx);
+          opList.insert(minIdx, buildColumn(list[minIdx], lPrimary, 10));
+          minIdx = j;
+          opList.removeAt(minIdx);
+          opList.insert(minIdx, buildColumn(list[minIdx], lHighlight, 12));
+        }
+      }
+
+      // Swap the found minimum element with the first element
+      //await Future.delayed(Duration(milliseconds: 250));
+      setState(() {
+        opList.removeAt(minIdx);
+        opList.insert(minIdx, buildColumn(list[minIdx], kTextBackground, 10));
+        opList.removeAt(i);
+        opList.insert(i, buildColumn(list[i], kTextBackground, 10));
+      });
+      if (stop) break;
+      await Future.delayed(Duration(microseconds: (speed).toInt()));
+      swap(list, minIdx, i);
+      swap(opList, minIdx, i);
+      setState(() {
+        opList.removeAt(minIdx);
+        opList.insert(minIdx, buildColumn(list[minIdx], lPrimary, 10));
+        opList.removeAt(i);
+        opList.insert(i, buildColumn(list[i], lSuccess, 10));
+      });
+    }
+    var i = list.length - 2;
+    opList.removeAt(list.length - 2);
+    opList.insert(i, buildColumn(list[i], lSuccess, 10));
+    opList.removeAt(i + 1);
+    opList.insert(i + 1, buildColumn(list[i + 1], lSuccess, 10));
   }
 
   List generateRandomList(double range) {
